@@ -21,7 +21,7 @@
             style.appendChild(document.createTextNode(""));
 
             document.head.appendChild(style);
-
+            style.sheet.el = style;
             return style.sheet;
         },
 
@@ -45,7 +45,7 @@
             var style = document.createElement("style");
             var head = document.getElementsByTagName("head")[0];
             head.appendChild(style);
-
+            style.sheet.el = style;
             return style.styleSheet;
         };
     }
@@ -462,6 +462,13 @@
             }
             this._styles._max = max_height;
         }
+
+        var cssTexts = _.map(this._styles.rules, function (rule) { return rule.cssText; });
+        $(this._styles.el).html(cssTexts.join('\n'));
+    };
+
+    GridStack.prototype.destroy = function () {
+        this._styles.el.remove()
     };
 
     GridStack.prototype._update_container_height = function () {
